@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SPU & Tebak-Tebakan Kimia (Mode Sekolah vs Olimpiade)</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="track-school">
+
+    <header class="app-header">
+        <h1>Sistem Periodik Unsur & Arena Tebak Kimia</h1>
+        <p class="subtitle">Pilih jalur belajarmu terlebih dahulu agar ritme Tabel SPU dan soal tebak-tebakan menyesuaikan levelnya.</p>
+
+        <!-- SAKELAR PEMISAH UTAMA: SEKOLAH (GOLONGAN A) vs OLIMPIADE (SEMUA UNSUR) -->
+        <div class="track-switcher">
+            <button id="btn-track-school" class="track-btn active" onclick="setTrackMode('school')">
+                🏫 Mode Sekolah (Khusus Golongan A)
+            </button>
+            <button id="btn-track-olympiad" class="track-btn" onclick="setTrackMode('olympiad')">
+                🏆 Mode Olimpiade / OSN (Semua Unsur 1–118)
+            </button>
+        </div>
+
+        <div id="track-indicator" class="track-indicator">
+            Aktif: <strong>Mode Sekolah</strong> — Tabel SPU dan tebak-tebakan dikunci khusus untuk <strong>Golongan IA – VIIIA</strong>.
+        </div>
+
+        <!-- Navigasi Tampilan -->
+        <div class="nav-tabs">
+            <button class="tab-btn active" onclick="switchView('table-view', this)">Tabel Periodik (SPU)</button>
+            <button class="tab-btn" onclick="switchView('quiz-view', this)">Tebak-Tebakan Unsur & Tren</button>
+        </div>
+    </header>
+
+    <!-- =====================================================================
+         BAGIAN 1: TABEL PERIODIK (SPU)
+         ===================================================================== -->
+    <main id="table-view" class="view-section active">
+        <div class="heatmap-controls">
+            <span>Warna & Data SPU:</span>
+            <button class="hm-btn active" onclick="setHeatmapMode('category', this)">Kategori Unsur</button>
+            <button class="hm-btn" onclick="setHeatmapMode('radius', this)">Jari-Jari Atom (pm)</button>
+            <button class="hm-btn" onclick="setHeatmapMode('ie', this)">Energi Ionisasi (kJ/mol)</button>
+            <button class="hm-btn" onclick="setHeatmapMode('ea', this)">Afinitas Elektron (kJ/mol)</button>
+            <button class="hm-btn" onclick="setHeatmapMode('en', this)">Keelektronegatifan</button>
+        </div>
+
+        <!-- Kontrol Tata Letak Khusus Mode Sekolah -->
+        <div id="school-layout-bar" class="school-layout-bar">
+            <span>Tata Letak Golongan A:</span>
+            <button id="btn-layout-full" class="layout-btn active" onclick="setSchoolLayout('dimmed')">
+                18 Kolom Standar (Golongan B Diredupkan)
+            </button>
+            <button id="btn-layout-compact" class="layout-btn" onclick="setSchoolLayout('compact')">
+                8 Kolom Rapat (Hanya IA – VIIIA)
+            </button>
+        </div>
+
+        <div id="trend-banner" class="trend-banner"></div>
+
+        <div class="table-scroll">
+            <div class="periodic-table" id="ptable"></div>
+        </div>
+
+        <div class="legend" id="legend-box">
+            <div class="leg-item"><div class="leg-color alkali"></div>Alkali (IA)</div>
+            <div class="leg-item"><div class="leg-color alkaline-earth"></div>Alkali Tanah (IIA)</div>
+            <div class="leg-item" data-osn-only="true"><div class="leg-color transition"></div>Logam Transisi (B)</div>
+            <div class="leg-item"><div class="leg-color post-transition"></div>Pasca Transisi</div>
+            <div class="leg-item"><div class="leg-color metalloid"></div>Metaloid</div>
+            <div class="leg-item"><div class="leg-color nonmetal"></div>Nonlogam</div>
+            <div class="leg-item"><div class="leg-color halogen"></div>Halogen (VIIA)</div>
+            <div class="leg-item"><div class="leg-color noble-gas"></div>Gas Mulia (VIIIA)</div>
+            <div class="leg-item" data-osn-only="true"><div class="leg-color lanthanide"></div>Lantanida</div>
+            <div class="leg-item" data-osn-only="true"><div class="leg-color actinide"></div>Aktinida</div>
+        </div>
+    </main>
+
+    <!-- =====================================================================
+         BAGIAN 2: TEBAK-TEBAKAN UNSUR & TREN PERIODIK
+         ===================================================================== -->
+    <section id="quiz-view" class="view-section">
+        <div class="quiz-container">
+            <div class="quiz-settings">
+                <div class="setting-group">
+                    <label for="quiz-mode">Jenis Tebak-Tebakan:</label>
+                    <select id="quiz-mode" onchange="generateQuestion()"></select>
+                </div>
+
+                <div class="setting-group">
+                    <label for="quiz-topic">Fokus Materi:</label>
+                    <select id="quiz-topic" onchange="generateQuestion()">
+                        <option value="all">Semua Sifat Periodik</option>
+                        <option value="radius">Jari-Jari Atom & Ion</option>
+                        <option value="ie">Energi Ionisasi (IE₁ & IEₙ)</option>
+                        <option value="ea">Afinitas Elektron (EA)</option>
+                        <option value="en">Keelektronegatifan (χ)</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Papan Skor Terpisah Otomatis per Mode -->
+            <div class="scoreboard">
+                <div class="score-box"><span id="score-mode-label">Skor Sekolah</span><strong id="score-val">0</strong></div>
+                <div class="score-box"><span>Benar Beruntun</span><strong id="streak-val">0 🔥</strong></div>
+                <div class="score-box"><span>Terjawab</span><strong id="total-val">0</strong></div>
+                <div class="score-box"><span>Akurasi</span><strong id="acc-val">0%</strong></div>
+            </div>
+
+            <!-- Kartu Soal -->
+            <div class="question-card">
+                <div class="q-badges">
+                    <span class="badge badge-track" id="q-track-badge">MODE SEKOLAH (GOL. A)</span>
+                    <span class="badge badge-type" id="q-type-badge">TEBAK POSISI SPU</span>
+                    <span class="badge badge-topic" id="q-topic-badge">UNSUR GOLONGAN A</span>
+                </div>
+
+                <h2 id="q-title" class="q-title">Memuat soal...</h2>
+                <div id="q-extra-data" class="q-extra-data"></div>
+
+                <div id="options-grid" class="options-grid"></div>
+
+                <div id="explanation-box" class="explanation-box hidden">
+                    <h4 id="exp-status">Analisis Jawaban</h4>
+                    <p id="exp-text"></p>
+                </div>
+
+                <div class="quiz-footer">
+                    <span class="shortcut-hint">Pintasan Keyboard: [1-4] pilih jawaban, [Enter] soal berikutnya</span>
+                    <button id="next-btn" class="next-btn" onclick="generateQuestion()">Soal Berikutnya ➔</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MODAL DETAIL UNSUR -->
+    <div class="modal-overlay" id="modal">
+        <div class="modal-content">
+            <span class="close-btn" id="close-modal">&times;</span>
+            <div class="modal-header">
+                <div class="m-box" id="m-box">H</div>
+                <div class="m-title">
+                    <h3 id="m-name">Hidrogen</h3>
+                    <p>Nomor Atom: <strong id="m-z" style="color:white;">1</strong> • Simbol: <strong id="m-sym" style="color:white;">H</strong> • <strong id="m-group" style="color:#38bdf8;">Golongan IA</strong></p>
+                    <p id="m-cat">Kategori: Nonlogam</p>
+                    <p class="m-config">Konfigurasi: <code id="m-config">1s¹</code></p>
+                </div>
+            </div>
+
+            <div class="m-stats-grid">
+                <div class="stat-card">
+                    <span class="stat-label">Jari-Jari Atom</span>
+                    <strong id="m-radius">-</strong>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-label">Energi Ionisasi ke-1</span>
+                    <strong id="m-ie">-</strong>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-label">Afinitas Elektron</span>
+                    <strong id="m-ea">-</strong>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-label">Keelektronegatifan</span>
+                    <strong id="m-en">-</strong>
+                </div>
+            </div>
+
+            <div class="m-body">
+                <h4>Deskripsi & Sifat Inti:</h4>
+                <p id="m-desc"></p>
+                <h4>Fungsi / Kegunaan Utama:</h4>
+                <p id="m-use"></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="data_unsur.js"></script>
+    <script src="kuis_olimpiade.js"></script>
+</body>
+</html>

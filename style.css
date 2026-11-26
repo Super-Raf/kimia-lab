@@ -1,0 +1,767 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #0f1117;
+    color: #f0f3f8;
+    margin: 0;
+    padding: 20px;
+}
+
+.app-header {
+    text-align: center;
+    margin-bottom: 18px;
+}
+
+h1 {
+    margin: 0 0 6px 0;
+    font-size: 27px;
+    background: linear-gradient(90deg, #38bdf8, #34d399);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+body.track-olympiad h1 {
+    background: linear-gradient(90deg, #fbbf24, #f472b6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+p.subtitle {
+    color: #9ca3af;
+    font-size: 14px;
+    margin: 0 0 14px 0;
+}
+
+/* Sakelar Pemisah Mode Sekolah vs Olimpiade */
+.track-switcher {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.track-btn {
+    padding: 11px 22px;
+    border-radius: 10px;
+    border: 2px solid #2d3748;
+    background: #161b26;
+    color: #94a3b8;
+    font-weight: 700;
+    font-size: 14.5px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.track-btn:hover {
+    color: #fff;
+    border-color: #475569;
+}
+
+#btn-track-school.active {
+    background: linear-gradient(135deg, #059669, #10b981);
+    border-color: #34d399;
+    color: #042f2e;
+    box-shadow: 0 4px 16px rgba(16, 185, 129, 0.35);
+}
+
+#btn-track-olympiad.active {
+    background: linear-gradient(135deg, #d97706, #f59e0b);
+    border-color: #fbbf24;
+    color: #1c1917;
+    box-shadow: 0 4px 16px rgba(245, 158, 11, 0.35);
+}
+
+.track-indicator {
+    max-width: 780px;
+    margin: 0 auto 14px auto;
+    font-size: 13px;
+    padding: 7px 14px;
+    border-radius: 6px;
+    background: rgba(16, 185, 129, 0.12);
+    border: 1px solid rgba(16, 185, 129, 0.35);
+    color: #a7f3d0;
+}
+
+body.track-olympiad .track-indicator {
+    background: rgba(245, 158, 11, 0.12);
+    border-color: rgba(245, 158, 11, 0.35);
+    color: #fde68a;
+}
+
+/* Navigasi Tab Utama */
+.nav-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.tab-btn {
+    padding: 9px 20px;
+    border-radius: 8px;
+    border: 1px solid #334155;
+    background: #1e2433;
+    color: #cbd5e1;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.tab-btn.active {
+    background: #2563eb;
+    border-color: #60a5fa;
+    color: #fff;
+}
+
+.view-section {
+    display: none;
+}
+
+.view-section.active {
+    display: block;
+}
+
+/* Kontrol Heatmap & Layout Sekolah */
+.heatmap-controls, .school-layout-bar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.heatmap-controls span, .school-layout-bar span {
+    font-size: 13px;
+    color: #9ca3af;
+}
+
+.hm-btn, .layout-btn {
+    padding: 6px 13px;
+    border-radius: 20px;
+    border: 1px solid #374151;
+    background: #1f2937;
+    color: #d1d5db;
+    font-size: 12.5px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.hm-btn.active {
+    background: #38bdf8;
+    color: #082f49;
+    font-weight: 700;
+    border-color: #7dd3fc;
+}
+
+.layout-btn.active {
+    background: #10b981;
+    color: #042f2e;
+    font-weight: 700;
+    border-color: #34d399;
+}
+
+.school-layout-bar.hidden {
+    display: none;
+}
+
+.trend-banner {
+    max-width: 960px;
+    margin: 0 auto 16px auto;
+    padding: 10px 16px;
+    background: #181c26;
+    border-left: 4px solid #38bdf8;
+    border-radius: 6px;
+    font-size: 13.5px;
+    color: #d1d5db;
+    text-align: center;
+}
+
+/* Tabel Periodik */
+.table-scroll {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    overflow-x: auto;
+    padding-bottom: 14px;
+}
+
+.periodic-table {
+    display: grid;
+    grid-template-columns: repeat(18, 62px);
+    grid-template-rows: repeat(10, 76px);
+    gap: 5px;
+    width: max-content;
+}
+
+/* Tampilan Rapat 8 Kolom (IA - VIIIA) untuk Mode Sekolah */
+.periodic-table.compact-8 {
+    grid-template-columns: repeat(8, 76px);
+    grid-template-rows: 28px repeat(7, 80px);
+    gap: 7px;
+}
+
+.group-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #1e293b;
+    color: #38bdf8;
+    font-weight: 800;
+    font-size: 12px;
+    border-radius: 5px;
+    border: 1px solid #334155;
+}
+
+.element {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 6px;
+    cursor: pointer;
+    color: #0b0f19;
+    transition: transform 0.12s, box-shadow 0.12s, opacity 0.2s;
+    position: relative;
+    padding: 4px 2px;
+    user-select: none;
+}
+
+.element:hover:not(.locked-el) {
+    transform: scale(1.16);
+    z-index: 20;
+    box-shadow: 0 0 18px rgba(255, 255, 255, 0.9);
+}
+
+.element * {
+    pointer-events: none;
+}
+
+/* Unsur non-Golongan A saat Mode Sekolah (18 kolom) */
+.element.locked-el {
+    opacity: 0.16;
+    filter: grayscale(85%);
+    cursor: not-allowed;
+}
+
+.el-top {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 3px;
+    font-size: 9.5px;
+    font-weight: 700;
+    opacity: 0.85;
+}
+
+.el-sym {
+    font-size: 20px;
+    font-weight: 900;
+    line-height: 1;
+}
+
+.el-name {
+    font-size: 9.5px;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+    font-weight: 600;
+}
+
+.el-val {
+    font-size: 9px;
+    font-weight: 800;
+    background: rgba(0, 0, 0, 0.15);
+    padding: 1px 4px;
+    border-radius: 3px;
+}
+
+/* Warna Kategori */
+.alkali { background-color: #ff6b6b; }
+.alkaline-earth { background-color: #ffd166; }
+.transition { background-color: #f497b6; }
+.post-transition { background-color: #cbd5e1; }
+.metalloid { background-color: #c5d86d; }
+.nonmetal { background-color: #8ce99a; }
+.halogen { background-color: #fff3bf; }
+.noble-gas { background-color: #74c0fc; }
+.lanthanide { background-color: #e599f7; }
+.actinide { background-color: #faa2c1; }
+
+.gap-marker {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 11px;
+    color: #9ca3af;
+    text-align: center;
+    border: 1px dashed #374151;
+    border-radius: 6px;
+}
+
+.gap-marker.locked-el {
+    opacity: 0.16;
+}
+
+.legend {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 14px;
+    margin-top: 14px;
+    font-size: 13px;
+    max-width: 1050px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.leg-item {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.leg-item.hidden-leg {
+    display: none;
+}
+
+.leg-color {
+    width: 16px;
+    height: 16px;
+    border-radius: 4px;
+    border: 1px solid #000;
+}
+
+/* MODAL DETAIL UNSUR */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.85);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    backdrop-filter: blur(5px);
+}
+
+.modal-content {
+    background: #1c212e;
+    border: 1px solid #334155;
+    border-radius: 12px;
+    padding: 24px;
+    max-width: 560px;
+    width: 100%;
+    position: relative;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8);
+}
+
+.close-btn {
+    position: absolute;
+    top: 12px;
+    right: 18px;
+    font-size: 32px;
+    cursor: pointer;
+    color: #f87171;
+    font-weight: bold;
+}
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin-bottom: 16px;
+    border-bottom: 1px solid #334155;
+    padding-bottom: 14px;
+}
+
+.m-box {
+    width: 78px;
+    height: 78px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 36px;
+    font-weight: 900;
+    border-radius: 10px;
+    color: #0b0f19;
+    flex-shrink: 0;
+}
+
+.m-title h3 {
+    margin: 0;
+    font-size: 24px;
+}
+
+.m-title p {
+    margin: 4px 0 0 0;
+    font-size: 13.5px;
+    color: #94a3b8;
+}
+
+.m-config code {
+    background: #0f172a;
+    color: #38bdf8;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-size: 13px;
+}
+
+.m-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.stat-card {
+    background: #131722;
+    border: 1px solid #2a3244;
+    border-radius: 8px;
+    padding: 10px 12px;
+    display: flex;
+    flex-direction: column;
+}
+
+.stat-label {
+    font-size: 11.5px;
+    color: #94a3b8;
+    margin-bottom: 3px;
+}
+
+.stat-card strong {
+    font-size: 15px;
+    color: #34d399;
+}
+
+.m-body h4 {
+    margin: 12px 0 4px 0;
+    color: #60a5fa;
+    font-size: 15px;
+}
+
+.m-body p {
+    margin: 0 0 10px 0;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #e2e8f0;
+}
+
+/* ARENA TEBAK-TEBAKAN */
+.quiz-container {
+    max-width: 880px;
+    margin: 0 auto;
+}
+
+.quiz-settings {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 12px;
+    background: #181c26;
+    padding: 16px;
+    border-radius: 10px;
+    border: 1px solid #2d3748;
+    margin-bottom: 14px;
+}
+
+.setting-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.setting-group label {
+    font-size: 12.5px;
+    color: #9ca3af;
+    font-weight: 600;
+}
+
+.setting-group select {
+    background: #0f1117;
+    color: #f8fafc;
+    border: 1px solid #374151;
+    padding: 9px 12px;
+    border-radius: 7px;
+    font-size: 13.5px;
+    cursor: pointer;
+}
+
+.scoreboard {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.score-box {
+    background: #181c26;
+    border: 1px solid #2d3748;
+    border-radius: 8px;
+    padding: 10px;
+    text-align: center;
+}
+
+.score-box span {
+    display: block;
+    font-size: 12px;
+    color: #9ca3af;
+}
+
+.score-box strong {
+    font-size: 20px;
+    color: #34d399;
+}
+
+body.track-olympiad .score-box strong {
+    color: #fbbf24;
+}
+
+.question-card {
+    background: #181c26;
+    border: 1px solid #2e3748;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.45);
+}
+
+.q-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.badge {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 20px;
+    letter-spacing: 0.4px;
+}
+
+.badge-track {
+    background: rgba(16, 185, 129, 0.2);
+    color: #34d399;
+    border: 1px solid #10b981;
+}
+
+body.track-olympiad .badge-track {
+    background: rgba(245, 158, 11, 0.2);
+    color: #fbbf24;
+    border: 1px solid #f59e0b;
+}
+
+.badge-type {
+    background: rgba(59, 130, 246, 0.2);
+    color: #60a5fa;
+    border: 1px solid #3b82f6;
+}
+
+.badge-topic {
+    background: rgba(168, 85, 247, 0.2);
+    color: #c084fc;
+    border: 1px solid #a855f7;
+}
+
+.q-title {
+    font-size: 18.5px;
+    line-height: 1.5;
+    margin: 0 0 14px 0;
+    color: #f8fafc;
+}
+
+.q-extra-data {
+    margin-bottom: 16px;
+}
+
+/* Mini SPU untuk Tebak Posisi Unsur */
+.mini-spu-wrap {
+    display: flex;
+    justify-content: center;
+    overflow-x: auto;
+    padding: 12px;
+    background: #0f1117;
+    border: 1px solid #2d3748;
+    border-radius: 8px;
+}
+
+.mini-spu {
+    display: grid;
+    gap: 3px;
+}
+
+.mini-cell {
+    width: 24px;
+    height: 24px;
+    border-radius: 3px;
+    background: #1e293b;
+    border: 1px solid #334155;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 10px;
+    color: #64748b;
+}
+
+.mini-cell.target-cell {
+    background: #f59e0b;
+    color: #0f172a;
+    font-weight: 900;
+    font-size: 14px;
+    border-color: #fde047;
+    box-shadow: 0 0 12px rgba(245, 158, 11, 0.85);
+    animation: pulseTarget 1.2s infinite alternate;
+}
+
+@keyframes pulseTarget {
+    from { transform: scale(1); }
+    to { transform: scale(1.15); }
+}
+
+.ie-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+    background: #0f1117;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.ie-table th, .ie-table td {
+    padding: 9px 12px;
+    border: 1px solid #2d3748;
+    text-align: center;
+}
+
+.ie-table th {
+    background: #1e293b;
+    color: #93c5fd;
+}
+
+.options-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 12px;
+    margin-bottom: 18px;
+}
+
+.option-btn {
+    background: #1f2533;
+    border: 1.5px solid #334155;
+    color: #f1f5f9;
+    padding: 13px 15px;
+    border-radius: 9px;
+    font-size: 15px;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.option-btn:hover:not(:disabled) {
+    border-color: #60a5fa;
+    background: #262f42;
+    transform: translateY(-2px);
+}
+
+.option-btn:disabled {
+    cursor: default;
+}
+
+.opt-key {
+    background: #0f172a;
+    color: #94a3b8;
+    font-weight: 700;
+    width: 26px;
+    height: 26px;
+    border-radius: 6px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 13px;
+    flex-shrink: 0;
+}
+
+.option-btn.correct {
+    background: rgba(16, 185, 129, 0.2);
+    border-color: #10b981;
+    color: #a7f3d0;
+}
+
+.option-btn.wrong {
+    background: rgba(239, 68, 68, 0.2);
+    border-color: #ef4444;
+    color: #fecaca;
+}
+
+.explanation-box {
+    background: #111827;
+    border-left: 4px solid #10b981;
+    border-radius: 8px;
+    padding: 15px 18px;
+    margin-bottom: 16px;
+}
+
+.explanation-box.wrong-exp {
+    border-left-color: #ef4444;
+}
+
+.explanation-box.hidden {
+    display: none;
+}
+
+.explanation-box h4 {
+    margin: 0 0 6px 0;
+    font-size: 15px;
+    color: #34d399;
+}
+
+.explanation-box.wrong-exp h4 {
+    color: #f87171;
+}
+
+.explanation-box p {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.6;
+    color: #d1d5db;
+}
+
+.quiz-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    border-top: 1px solid #2d3748;
+    padding-top: 14px;
+}
+
+.shortcut-hint {
+    font-size: 12px;
+    color: #6b7280;
+}
+
+.next-btn {
+    background: #2563eb;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.next-btn:hover {
+    background: #1d4ed8;
+}
